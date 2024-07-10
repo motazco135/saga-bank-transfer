@@ -1,0 +1,16 @@
+
+X	java:S125"<This block of commented-out lines of code should be removed.(¿Êí€8ø…ÎÍ‰2
+]
+java:S1128";Remove this unused import 'lombok.RequiredArgsConstructor'.(ÑØúøÿÿÿÿ8ø…ÎÍ‰2
+‚
+java:S1128":Remove this unused import 'org.apache.camel.CamelContext'.(¸ò¬ùÿÿÿÿ8”ĞÌ¤ˆ2J$9efd24e6-a6db-4f96-90c5-bae0a1d992f4
+u
+java:S1128"XRemove this unused import 'org.apache.camel.builder.component.ComponentsBuilderFactory'.(şœ£8ø…ÎÍ‰2
+n
+java:S1128"LRemove this unused import 'org.apache.camel.component.kafka.KafkaComponent'.(Íä‹ëşÿÿÿÿ8ø…ÎÍ‰2
+m
+java:S1128"PRemove this unused import 'org.apache.camel.component.kafka.KafkaConfiguration'.(”¢’ø8ø…ÎÍ‰2
+e
+java:S1128"HRemove this unused import 'org.springframework.context.annotation.Bean'.(‚î‰Ş8ø…ÎÍ‰2
+s
+java:S1128	"QRemove this unused import 'org.springframework.context.annotation.Configuration'.(¬²Úäşÿÿÿÿ8ø…ÎÍ‰2
