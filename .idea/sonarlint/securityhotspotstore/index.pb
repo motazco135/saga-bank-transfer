@@ -130,3 +130,15 @@ S
 #.idea/sonarlint/issuestore/index.pb,9/f/9fe84ebb15faf917b7def6236dba604453cc61e0
 ]
 -.idea/sonarlint/securityhotspotstore/index.pb,8/8/88a9255124c95bdc913197c120a8d560edc59c8e
+>
+fee/.gitignore,d/a/dadbdc0ec3937a203895f3a9225f24534b00e27b
+B
+account/.gitignore,f/c/fc8727427d9db8a1969946dd861cd33931331f61
+B
+journal/.gitignore,7/e/7ed6391556925cc5bc440159b7026f6171f7586c
+B
+payment/.gitignore,e/0/e00cde13d6d96a7e0492cfe98297cbb7c9c7cfe7
+?
+account/HELP.md,6/e/6e406c11201057a8f3133794b42668b4bdf7138c
+?
+payment/HELP.md,7/a/7a4b4fcac705fede98d427882baed41001d0258c
