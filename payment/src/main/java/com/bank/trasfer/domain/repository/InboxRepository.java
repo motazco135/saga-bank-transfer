@@ -7,4 +7,7 @@ import java.util.UUID;
 
 public interface InboxRepository extends JpaRepository<InboxMessageEntity, Long> {
     boolean existsByPaymentId(UUID paymentId);
+    boolean existsByPaymentIdAndAggregateTypeAndStatus(UUID paymentId,String aggregateType,String status);
+    boolean existsByPaymentIdAndAggregateType(UUID paymentId,String aggregateType);
+
 }

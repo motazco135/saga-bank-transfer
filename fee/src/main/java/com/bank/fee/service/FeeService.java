@@ -7,22 +7,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.Map;
-
+import java.util.UUID;
 import static com.bank.fee.dto.KafkaTopics.*;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class FeeService {
-    private final KafkaTemplate<String, String> kafkaTemplate;
+
     private final InboxService inboxService;
     private final OutboxService outboxService;
 
@@ -53,11 +52,11 @@ public class FeeService {
                 acknowledgment.acknowledge();
             }
         } catch (Exception e) {
-            // Publish compensation message
-            kafkaTemplate.send(COMPENSATION_FEE_REQUEST_TOPIC, paymentId, paymentDetails);
+            // Save compensation message to outbox table
+            outboxService.saveMessage(UUID.fromString(paymentId),COMPENSATION_FEE_REQUEST_TOPIC,paymentDetails);
+
             e.printStackTrace();
             throw e;
         }
     }
-
 }

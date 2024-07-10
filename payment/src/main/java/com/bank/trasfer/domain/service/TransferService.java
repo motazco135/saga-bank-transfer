@@ -67,8 +67,22 @@ public class TransferService {
         transferRepository.save(transferEntity);
     }
 
-    public void cancelTransfer (UUID paymentId){
-        transferRepository.findById(paymentId).get().fail();
+    @Transactional
+    public void updateFee(String paymentDetails) throws JsonProcessingException {
+        log.info("updateFee payment-details : {} ",paymentDetails);
+        //convert json to object
+        TransferDto transferDto = mapper.readValue(paymentDetails,TransferDto.class);
+       if(transferDto!= null && transferDto.getFee()>0){
+          int updatedRecords = transferRepository.updateFeeAmount(transferDto.getFee(),transferDto.getPaymentId());
+          log.info("updateFee updatedRecordsCount : {} ",updatedRecords);
+       }
+    }
+
+
+    @Transactional
+    public void updateTransferStatus(UUID paymentId,TransferState state){
+        int updatedRecords = transferRepository.updateTransferStatus(paymentId,state);
+        log.info("updateTransferStatus updatedRecordsCount : {} ",updatedRecords);
     }
 
 }
