@@ -1,6 +1,6 @@
 package com.bank.trasfer;
 
-import com.bank.trasfer.domain.dto.TransferDto;
+import com.bank.trasfer.dto.TransferDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

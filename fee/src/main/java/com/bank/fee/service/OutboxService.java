@@ -22,9 +22,9 @@ public class OutboxService {
     private final OutboxRepository outboxRepository;
 
     @Transactional
-    public void saveMessage(UUID paymentId, String aggregateType, String payload) {
+    public void saveMessage(String paymentId, String aggregateType, String payload) {
         OutboxMessageEntity message = new OutboxMessageEntity();
-        message.setPaymentId(paymentId);
+        message.setPaymentId(UUID.fromString(paymentId));
         message.setAggregateType(aggregateType);
         message.setPayload(payload);
         message.setStatus(OutBoxStatus.PENDING.toString());

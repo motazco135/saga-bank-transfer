@@ -1,6 +1,6 @@
 package com.bank.trasfer.domain;
 
-import com.bank.trasfer.domain.dto.TransferState;
+import com.bank.trasfer.dto.TransferState;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -39,8 +39,5 @@ public class TransferEntity {
     @PreUpdate
     void setModifiedDate(){
         this.modifiedDate = LocalDateTime.now();
-    }
-    public void fail() {
-        this.state = TransferState.FAILED;
     }
 }

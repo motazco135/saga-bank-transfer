@@ -1,10 +1,10 @@
-package com.bank.trasfer.domain.service;
+package com.bank.trasfer.service;
 
-import com.bank.trasfer.domain.dto.TransferState;
+import com.bank.trasfer.dto.TransferState;
 import com.bank.trasfer.api.CreateTransferRequest;
 import com.bank.trasfer.api.CreateTransferResponse;
 import com.bank.trasfer.domain.TransferEntity;
-import com.bank.trasfer.domain.dto.TransferDto;
+import com.bank.trasfer.dto.TransferDto;
 import com.bank.trasfer.domain.repository.TransferRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,9 +13,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.UUID;
 
-import static com.bank.trasfer.domain.dto.KafkaTopics.PAYMENT_REQUEST_TOPIC;
+import static com.bank.trasfer.dto.KafkaTopics.PAYMENT_REQUEST_TOPIC;
 
 @Slf4j
 @Service
@@ -72,10 +73,12 @@ public class TransferService {
         log.info("updateFee payment-details : {} ",paymentDetails);
         //convert json to object
         TransferDto transferDto = mapper.readValue(paymentDetails,TransferDto.class);
-       if(transferDto!= null && transferDto.getFee()>0){
-          int updatedRecords = transferRepository.updateFeeAmount(transferDto.getFee(),transferDto.getPaymentId());
-          log.info("updateFee updatedRecordsCount : {} ",updatedRecords);
-       }
+        Optional<TransferEntity> transferEntity = transferRepository.findById(transferDto.getPaymentId());
+        if(transferEntity.isPresent()){
+            TransferEntity entity = transferEntity.get();
+            entity.setFeeAmount(transferDto.getFee());
+            transferRepository.save(entity);
+        }
     }
 
 

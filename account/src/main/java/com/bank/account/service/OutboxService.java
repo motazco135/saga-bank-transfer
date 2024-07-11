@@ -1,11 +1,11 @@
-package com.bank.trasfer.domain.service;
+package com.bank.account.service;
 
-import com.bank.trasfer.domain.dto.OutBoxStatus;
-import com.bank.trasfer.domain.OutboxMessageEntity;
-import com.bank.trasfer.domain.repository.OutboxRepository;
+import com.bank.account.domain.OutboxMessageEntity;
+import com.bank.account.dto.OutBoxStatus;
+import com.bank.account.repository.OutboxRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.camel.CamelContext;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,19 +13,18 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.UUID;
 
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class OutboxService {
 
-    private final CamelContext camelContext;
+    private final KafkaTemplate<String, String> kafkaTemplate;
     private final OutboxRepository outboxRepository;
 
     @Transactional
-    public void saveMessage(UUID paymentId, String aggregateType, String payload) {
+    public void saveMessage(String paymentId, String aggregateType, String payload) {
         OutboxMessageEntity message = new OutboxMessageEntity();
-        message.setPaymentId(paymentId);
+        message.setPaymentId(UUID.fromString(paymentId));
         message.setAggregateType(aggregateType);
         message.setPayload(payload);
         message.setStatus(OutBoxStatus.PENDING.toString());
@@ -37,11 +36,10 @@ public class OutboxService {
         List<OutboxMessageEntity> messages = outboxRepository.findPendingMessages();
         for (OutboxMessageEntity message : messages) {
             log.info("send to kafka topic name: {} paymentId: {}",message.getAggregateType(),message.getPaymentId());
-            camelContext.createProducerTemplate()
-                    //.sendBodyAndHeader("kafka:" + message.getAggregateType()+"?key="+message.getPaymentId(),message.getPayload(), KafkaConstants.KEY,message.getPaymentId());
-                    .sendBody("kafka:" + message.getAggregateType()+"?key="+message.getPaymentId(), message.getPayload());
+            kafkaTemplate.send(message.getAggregateType(), message.getPaymentId().toString(), message.getPayload());
             message.setStatus(OutBoxStatus.PROCESSED.toString());
             outboxRepository.save(message);
         }
     }
 }
+

@@ -1,4 +1,4 @@
-package com.bank.trasfer.domain.dto;
+package com.bank.trasfer.dto;
 
 public enum TransferState {
     PENDING,

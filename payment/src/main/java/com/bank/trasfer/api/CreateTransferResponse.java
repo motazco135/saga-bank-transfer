@@ -1,6 +1,6 @@
 package com.bank.trasfer.api;
 
-import com.bank.trasfer.domain.dto.TransferState;
+import com.bank.trasfer.dto.TransferState;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

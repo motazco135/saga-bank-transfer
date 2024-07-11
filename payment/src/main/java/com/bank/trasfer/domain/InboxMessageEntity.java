@@ -22,7 +22,7 @@ public class InboxMessageEntity {
 
     private String status;//message status
 
-    @Column(updatable = false, name = "processed_at" , columnDefinition = "TIMESTAMP")
+    @Column(name = "processed_at" , columnDefinition = "TIMESTAMP")
     private LocalDateTime processedAt;
 
     @Column(updatable = false, name = "created_at" , columnDefinition = "TIMESTAMP")
