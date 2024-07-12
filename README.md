@@ -2,3 +2,6 @@ One of the common issues is how to manage the Distributed Transaction across mul
 
 Article Link : 
 https://www.linkedin.com/pulse/distributed-transaction-motaz-mohammed-sameh-eippf?utm_source=share&utm_medium=member_ios&utm_campaign=share_via
+
+
+Swagger URL : http://localhost:8084/api/payment/swagger-ui/index.html
