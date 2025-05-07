@@ -1,5 +1,6 @@
 package com.bank.trasfer.service;
 
+import com.bank.trasfer.api.TransferStatusResponseDto;
 import com.bank.trasfer.dto.TransferState;
 import com.bank.trasfer.api.CreateTransferRequest;
 import com.bank.trasfer.api.CreateTransferResponse;
@@ -86,6 +87,18 @@ public class TransferService {
     public void updateTransferStatus(UUID paymentId,TransferState state){
         int updatedRecords = transferRepository.updateTransferStatus(paymentId,state);
         log.info("updateTransferStatus updatedRecordsCount : {} ",updatedRecords);
+    }
+
+    public Optional<TransferStatusResponseDto> getTransferStatus(UUID paymentId){
+        log.info("getTransferStatus paymentId : {} ",paymentId);
+        Optional<TransferEntity> transferEntity = transferRepository.findById(paymentId);
+        if(transferEntity.isPresent()){
+            TransferEntity entity = transferEntity.get();
+            log.info("getTransferStatus entity : {} ",entity);
+            TransferStatusResponseDto transferStatusResponseDto = mapper.convertValue(entity, TransferStatusResponseDto.class);
+            return Optional.of(transferStatusResponseDto);
+        }
+        return Optional.empty();
     }
 
 }

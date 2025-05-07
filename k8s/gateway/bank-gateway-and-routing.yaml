@@ -1,0 +1,35 @@
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: bank-gateway
+  namespace: bank-saga
+spec:
+  selector:
+    istio: ingress
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - "bank.local"
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: bank-routing
+  namespace: bank-saga
+spec:
+  hosts:
+    - "bank.local"
+  gateways:
+    - bank-gateway
+  http:
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: payment-service.bank-saga.svc.cluster.local
+            port:
+              number: 8084

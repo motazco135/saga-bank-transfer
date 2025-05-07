@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fee-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fee-service
+  template:
+    metadata:
+      labels:
+        app: fee-service
+    spec:
+      containers:
+        - name: fee-service
+          image: fee-service:1.0
+          ports:
+            - containerPort: 8085
+          livenessProbe:
+            httpGet:
+              path: /api/fee/actuator/health
+              port: 8085
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /api/fee/actuator/health
+              port: 8085
+            initialDelaySeconds: 30
+            periodSeconds: 10

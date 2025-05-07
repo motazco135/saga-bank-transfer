@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose-redis.yml -o k8s
+    kompose.version: 1.35.0 (HEAD)
+  labels:
+    io.kompose.service: redis
+  name: redis
+  namespace: kafka-stack
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: redis
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose-redis.yml -o k8s
+        kompose.version: 1.35.0 (HEAD)
+      labels:
+        io.kompose.service: redis
+    spec:
+      containers:
+        - args:
+            - redis-server
+            - --requirepass admin
+            - --appendonly
+            - "yes"
+            - --save
+            - "60"
+            - "10000"
+            - --save
+            - "300"
+            - "10"
+            - --save
+            - "900"
+            - "1"
+            - --loadmodule
+            - /opt/redis-stack/lib/redisearch.so
+            - --loadmodule
+            - /opt/redis-stack/lib/rejson.so
+          image: redis/redis-stack-server:latest
+          name: redis
+          ports:
+            - containerPort: 6379
+              protocol: TCP
+      hostname: redis
+      restartPolicy: Always

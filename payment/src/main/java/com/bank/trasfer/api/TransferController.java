@@ -5,10 +5,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
+import java.util.UUID;
 
 
 @RestController
@@ -30,6 +30,16 @@ public class TransferController {
             CreateTransferResponse transferResponse = transferService.createTransferRequest(createTransferRequest);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(transferResponse);
+        }
+    }
+
+    @GetMapping("/{paymentId}")
+    public ResponseEntity<?> getTransferRequest(@PathVariable UUID paymentId) throws JsonProcessingException {
+        Optional<TransferStatusResponseDto> transferStatusResponseDto =  transferService.getTransferStatus(paymentId);
+        if(transferStatusResponseDto.isPresent()){
+            return ResponseEntity.ok(transferStatusResponseDto.get());
+        }else {
+            return ResponseEntity.notFound().build();
         }
     }
 }
