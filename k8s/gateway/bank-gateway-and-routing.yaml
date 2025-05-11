@@ -28,6 +28,10 @@ spec:
     - match:
         - uri:
             prefix: /
+      retries:
+        attempts: 3
+        perTryTimeout: 1s
+      timeout: 4s
       route:
         - destination:
             host: payment-service.bank-saga.svc.cluster.local

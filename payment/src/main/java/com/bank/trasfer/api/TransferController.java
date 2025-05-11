@@ -42,4 +42,11 @@ public class TransferController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/slow")
+    public ResponseEntity<String> delayedResponse() throws InterruptedException {
+        System.out.println("Start /slow : thread name = "+Thread.currentThread().getName()+"");
+        Thread.sleep(1100); // 1.1-second delay to simulate slowness
+        return ResponseEntity.ok("Delayed response");
+    }
 }

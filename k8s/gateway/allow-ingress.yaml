@@ -1,0 +1,30 @@
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: allow-plaintext-to-kafka
+  namespace: bank-saga
+spec:
+  mtls:
+    mode: PERMISSIVE
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: payment-service-no-mtls
+  namespace: bank-saga
+spec:
+  host: payment-service.bank-saga.svc.cluster.local
+  trafficPolicy:
+    tls:
+      mode: DISABLE
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: account-service-no-mtls
+  namespace: bank-saga
+spec:
+  host: account-service.bank-saga.svc.cluster.local
+  trafficPolicy:
+    tls:
+      mode: DISABLE
