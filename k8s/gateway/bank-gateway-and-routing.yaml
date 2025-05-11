@@ -31,7 +31,7 @@ spec:
       retries:
         attempts: 3
         perTryTimeout: 1s
-      timeout: 4s
+      timeout: 5s
       route:
         - destination:
             host: payment-service.bank-saga.svc.cluster.local
