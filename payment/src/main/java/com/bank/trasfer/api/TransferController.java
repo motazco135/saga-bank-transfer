@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 @RestController
@@ -43,10 +44,30 @@ public class TransferController {
         }
     }
 
+    @GetMapping("/rate-limit")
+    public ResponseEntity<String> rateLimit()  {
+        System.out.println("Start /rate-limit : thread name = "+Thread.currentThread().getName()+"");
+        return ResponseEntity.ok("rate-limit response");
+    }
+
     @GetMapping("/slow")
     public ResponseEntity<String> delayedResponse() throws InterruptedException {
         System.out.println("Start /slow : thread name = "+Thread.currentThread().getName()+"");
         Thread.sleep(1100); // 1.1-second delay to simulate slowness
         return ResponseEntity.ok("Delayed response");
+    }
+
+    private AtomicInteger retryCount = new AtomicInteger(0);
+
+    @GetMapping("/flaky")
+    public ResponseEntity<String> flaky() {
+        int attempt = retryCount.incrementAndGet();
+        System.out.println("Retry attempt: " + attempt);
+
+        if (attempt < 3) {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("fail");
+        }
+
+        return ResponseEntity.ok("success");
     }
 }
