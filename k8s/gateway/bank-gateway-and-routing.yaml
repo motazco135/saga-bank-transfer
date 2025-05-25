@@ -17,6 +17,32 @@ spec:
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
+  name: account-service
+  namespace: bank-saga
+spec:
+  hosts:
+    - "bank.local"
+  gateways:
+    - bank-gateway
+  http:
+    - match:
+        - uri:
+            prefix: "/account/"
+      rewrite:
+        uri: "/"
+      retries:
+        attempts: 3
+        perTryTimeout: 1s
+      timeout: 5s
+      route:
+        - destination:
+            host: account-service.bank-saga.svc.cluster.local
+            port:
+              number: 8086
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
   name: bank-routing
   namespace: bank-saga
 spec:
@@ -27,7 +53,9 @@ spec:
   http:
     - match:
         - uri:
-            prefix: /
+            prefix: "/payment/"
+      rewrite:
+        uri: "/"
       retries:
         attempts: 3
         perTryTimeout: 1s

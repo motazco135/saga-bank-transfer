@@ -1,6 +1,7 @@
 package com.bank.account.service;
 
 import com.bank.account.domain.AccountEntity;
+import com.bank.account.dto.AccountDto;
 import com.bank.account.dto.TransferDto;
 import com.bank.account.repository.AccountRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -10,7 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.bank.account.dto.KafkaTopics.ACCOUNT_RESPONSE_TOPIC;
 import static com.bank.account.dto.KafkaTopics.COMPENSATION_ACCOUNT_REQUEST_TOPIC;
@@ -59,5 +62,13 @@ public class AccountService {
             }
             e.printStackTrace();
         }
+    }
+
+    public List<AccountDto> getAccounts() {
+        List<AccountEntity> accountEntities  =  accountRepository.findAll();
+        List<AccountDto> accountDTOs = accountEntities.stream()
+                .map(accountEntity -> mapper.convertValue(accountEntity, AccountDto.class))
+                .collect(Collectors.toList());
+        return accountDTOs;
     }
 }

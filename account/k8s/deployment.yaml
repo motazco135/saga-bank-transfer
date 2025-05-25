@@ -19,13 +19,13 @@ spec:
             - containerPort: 8086
           livenessProbe:
             httpGet:
-              path: /api/account/actuator/health
+              path: /api/actuator/health
               port: 8086
             initialDelaySeconds: 30
             periodSeconds: 10
           readinessProbe:
             httpGet:
-              path: /api/account/actuator/health
+              path: /api/actuator/health
               port: 8086
             initialDelaySeconds: 30
             periodSeconds: 10

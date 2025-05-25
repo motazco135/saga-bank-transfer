@@ -19,13 +19,13 @@ spec:
             - containerPort: 8084
           livenessProbe:
             httpGet:
-              path: /api/payment/actuator/health
+              path: /api/actuator/health
               port: 8084
             initialDelaySeconds: 30
             periodSeconds: 10
           readinessProbe:
             httpGet:
-              path: /api/payment/actuator/health
+              path: /api/actuator/health
               port: 8084
             initialDelaySeconds: 30
             periodSeconds: 10
